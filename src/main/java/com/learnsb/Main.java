@@ -14,7 +14,6 @@ import java.util.Objects;
 @RestController
 public class Main {
     private static List<Student> studentList;
-
     static {
         studentList = new ArrayList<>();
         Student amit = new Student(
@@ -30,8 +29,6 @@ public class Main {
         );
        studentList.add(anvi);
     }
-
-
 
     public static void main(String[] args) {
         // this method return configurable context.
@@ -115,10 +112,15 @@ public class Main {
         return studentList;
     }
 
-//    @GetMapping("student/{id}")
-//    public int getId(@PathVariable int id){
-//        Student student = studentList.stream().filter(student1->student1.id);
-//    }
+    @GetMapping("student/{id}")
+    public Student getId(@PathVariable("id") int id){
+        Student student = studentList.stream().filter(student1-> Objects.equals(student1.id, id))
+                .findFirst()
+                .orElseThrow(
+                        ()->new IllegalArgumentException("Customer with id [%s] not found".formatted() ));
+
+        return student;
+    }
 
     static class Student{
         private int id;
